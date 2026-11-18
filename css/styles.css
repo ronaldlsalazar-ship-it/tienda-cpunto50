@@ -162,3 +162,32 @@ section { padding:4rem 0; }
 
 /* Ícono de respaldo (cuando no hay imagen) */
 .product-image i { font-size: 4rem; }
+/* === BLINDAJE DE IMÁGENES DE PRODUCTOS === */
+.product-card {
+    overflow: hidden !important; /* Nada se puede salir de la tarjeta */
+}
+
+.product-image {
+    width: 100% !important;
+    height: 220px !important;       /* Altura fija del "marco" */
+    max-height: 220px !important;
+    overflow: hidden !important;    /* Corta lo que sobra */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f3f4f6 !important;
+}
+
+.product-image img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;   /* La clave: llena el marco sin estirar/deformar */
+    object-position: center top !important; /* Muestra la parte de arriba (ej: cuello de la camisa) */
+    display: block !important;
+}
+
+/* Ícono de respaldo si la imagen falla */
+.product-image i {
+    font-size: 4rem !important;
+    color: #d1d5db !important;
+}
