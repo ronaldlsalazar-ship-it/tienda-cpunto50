@@ -22,9 +22,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 function renderProducts(list) {
     const grid = document.getElementById('productsGrid');
     if (!list.length) { grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;">No se encontraron productos.</p>'; return; }
-    grid.innerHTML = list.map(p => `
+    
+    grid.innerHTML = list.map(p => {
+        // Si tiene imagen, la muestra; si no, muestra el ícono
+        const imagenHTML = p.imagen 
+            ? `<img src="assets/images/${p.imagen}" alt="${p.name}" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+               <div class="product-image" style="display:none;"><i class="fas ${p.icon}"></i></div>`
+            : `<div class="product-image"><i class="fas ${p.icon}"></i></div>`;
+        
+        return `
         <div class="product-card">
-            <div class="product-image"><i class="fas ${p.icon}"></i></div>
+            ${imagenHTML}
             <div class="product-info">
                 <span class="product-category">${p.category.toUpperCase()}</span>
                 <h3 class="product-name">${p.name}</h3>
@@ -33,9 +41,9 @@ function renderProducts(list) {
                 <span class="stock-badge ${p.stock > 0 ? 'in-stock' : 'made-to-order'}">${p.stock > 0 ? 'En Stock ('+p.stock+')' : 'Bajo Pedido'}</span>
                 <button class="btn-add-cart" onclick="addToCart(${p.id})"><i class="fas fa-shopping-cart"></i> Agregar</button>
             </div>
-        </div>`).join('');
+        </div>`;
+    }).join('');
 }
-
 function renderServices() {
     const grid = document.getElementById('servicesGrid');
     if (!grid) return;
