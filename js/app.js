@@ -24,10 +24,12 @@ function renderProducts(list) {
     if (!list.length) { grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;">No se encontraron productos.</p>'; return; }
     
     grid.innerHTML = list.map(p => {
-        // Si tiene imagen, la muestra; si no, muestra el ícono
-        const imagenHTML = p.imagen 
-            ? `<img src="assets/images/${p.imagen}" alt="${p.name}" class="product-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-               <div class="product-image" style="display:none;"><i class="fas ${p.icon}"></i></div>`
+        // Si tiene imagen, va DENTRO del contenedor; si no, el ícono
+        const imagenHTML = p.imagen
+            ? `<div class="product-image">
+                 <img src="assets/images/${p.imagen}" alt="${p.name}" loading="lazy"
+                      onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas ${p.icon}\\'></i>';">
+               </div>`
             : `<div class="product-image"><i class="fas ${p.icon}"></i></div>`;
         
         return `
