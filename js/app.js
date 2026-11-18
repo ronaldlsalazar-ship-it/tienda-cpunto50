@@ -1,13 +1,21 @@
-// ⚠️ CAMBIA ESTO por el número de WhatsApp de tu negocio (con código país, sin + ni espacios)
 const NUMERO_WA = '584148565666';
 
 let products = [], services = [], config = {};
 
 document.addEventListener('DOMContentLoaded', async () => {
+    console.log('🚀 Iniciando aplicación...');
+    
     const data = await dataLoader.loadAll();
     products = data.products;
     services = data.services;
     config = data.config;
+
+    console.log('📊 Datos disponibles:', {
+        productos: products.length,
+        servicios: services.length,
+        telas: config.telas?.length || 0,
+        colores: config.colores?.length || 0
+    });
 
     renderProducts(products);
     renderServices();
@@ -17,6 +25,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     initCotizador();
     initFilters();
     initCartModal();
+    
+    console.log('✅ Aplicación iniciada correctamente');
 });
 
 function renderProducts(list) {
@@ -24,8 +34,7 @@ function renderProducts(list) {
     if (!list.length) { grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;">No se encontraron productos.</p>'; return; }
     
     grid.innerHTML = list.map(p => {
-        // Si tiene imagen, va DENTRO del contenedor; si no, el ícono
-        const imagenHTML = p.imagen
+        const imagenHTML = p.imagen 
             ? `<div class="product-image">
                  <img src="assets/images/${p.imagen}" alt="${p.name}" loading="lazy"
                       onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas ${p.icon}\\'></i>';">
@@ -45,6 +54,14 @@ function renderProducts(list) {
             </div>
         </div>`;
     }).join('');
+}
+
+function renderServices() {
+    const grid = document.getElementById('servicesGrid');
+    if (!grid) return;
+    if (!services.length) { grid.innerHTML = '<p style="text-align:center;">No hay servicios disponibles.</p>'; return; }
+    grid.innerHTML = services.map(s => `
+        <div class="service-card"><i class="fas ${s.icon}"></i><h3>${s.name}</h3><p>${s.description}</p></div>`).join('');
 }
 
 function renderPayments() {
@@ -95,18 +112,36 @@ function showNotification(msg) {
 }
 
 /* ============ COTIZADOR ============ */
-let cotState = {};
-
 function initCotizador() {
+    console.log('🎨 Iniciando cotizador...');
+    
+    // 1. Llenar productos
     const selProd = document.getElementById('cotProducto');
-    selProd.innerHTML = products.map(p => `<option value="${p.id}">${p.name} — $${p.price.toFixed(2)}</option>`).join('');
+    if (selProd) {
+        if (products.length > 0) {
+            selProd.innerHTML = products.map(p => `<option value="${p.id}">${p.name} — $${p.price.toFixed(2)}</option>`).join('');
+            console.log('✅ Productos en cotizador:', products.length);
+        } else {
+            selProd.innerHTML = '<option value="">No hay productos disponibles</option>';
+            console.warn('⚠️ No hay productos para el cotizador');
+        }
+    } else {
+        console.error('❌ No se encontró el elemento #cotProducto');
+    }
 
+    // 2. Función helper para llenar selects
     const fill = (id, arr, def) => {
         const el = document.getElementById(id);
-        if (!el) return;
+        if (!el) {
+            console.error('❌ No se encontró el elemento #' + id);
+            return;
+        }
         const list = arr && arr.length ? arr : ['—'];
         el.innerHTML = `<option value="">${def}</option>` + list.map(v => `<option value="${v}">${v}</option>`).join('');
+        console.log(`✅ ${id}: ${arr?.length || 0} opciones`);
     };
+
+    // 3. Llenar todos los selects del cotizador
     fill('cotServicio', config.servicios, 'Sin servicio extra');
     fill('cotTela', config.telas, 'Seleccionar tela');
     fill('cotColor', config.colores, 'Seleccionar color');
@@ -115,11 +150,18 @@ function initCotizador() {
     fill('cotModelo', config.modelos, 'Seleccionar modelo');
     fill('cotManga', config.mangas, 'Seleccionar manga');
 
+    // 4. Eventos de cambio
     const ids = ['cotProducto','cotCantidad','cotServicio','cotTela','cotColor','cotTalla','cotSexo','cotModelo','cotManga'];
-    ids.forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('change', updateCotizador); });
-    document.getElementById('cotCantidad').addEventListener('input', updateCotizador);
+    ids.forEach(id => { 
+        const el = document.getElementById(id); 
+        if (el) el.addEventListener('change', updateCotizador); 
+    });
+    const cantEl = document.getElementById('cotCantidad');
+    if (cantEl) cantEl.addEventListener('input', updateCotizador);
 
-    document.getElementById('cotAddCart').addEventListener('click', () => {
+    // 5. Botones
+    const btnAdd = document.getElementById('cotAddCart');
+    if (btnAdd) btnAdd.addEventListener('click', () => {
         const p = products.find(x => x.id === parseInt(document.getElementById('cotProducto').value));
         if (!p) return showNotification('Selecciona un producto');
         const qty = parseInt(document.getElementById('cotCantidad').value) || 1;
@@ -127,9 +169,11 @@ function initCotizador() {
         showNotification(`${p.name} x${qty} agregado al carrito`);
     });
 
-    document.getElementById('cotSendWa').addEventListener('click', sendCotizacionWA);
+    const btnWa = document.getElementById('cotSendWa');
+    if (btnWa) btnWa.addEventListener('click', sendCotizacionWA);
 
     updateCotizador();
+    console.log('✅ Cotizador iniciado');
 }
 
 function getCotSpecs() {
