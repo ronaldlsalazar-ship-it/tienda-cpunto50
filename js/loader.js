@@ -58,11 +58,12 @@ class DataLoader {
             if (!resConf.ok) throw new Error('No se encontró configuracion.csv');
             const confData = this.parseCSV(await resConf.text());
             
-            confData.forEach(item => {
+                       confData.forEach(item => {
                 let key = item.tipo + 's';
                 if (item.tipo === 'metodo_pago') key = 'metodosPago';
-                if (this.config[key]) {
-                    this.config[key].push(item.valor);
+                if (item.tipo === 'color') key = 'colores'; // <-- ESTA LÍNEA ARREGLA EL BUG
+                if (this.config[key]) this.config[key].push(item.valor);
+            });
                 } else {
                     console.warn('⚠️ Tipo no reconocido:', item.tipo);
                 }
