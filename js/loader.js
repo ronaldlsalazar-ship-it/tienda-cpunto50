@@ -30,12 +30,14 @@ class DataLoader {
             const resProd = await fetch('data/productos.csv');
             if (!resProd.ok) throw new Error('No se encontró productos.csv (HTTP ' + resProd.status + ')');
             const prodData = this.parseCSV(await resProd.text());
+            
             this.products = prodData.map(p => ({
                 id: parseInt(p.id),
                 name: p.nombre,
                 category: p.categoria,
-                price: parseFloat(p.precio),
-                stock: parseInt(p.stock),
+                // FIX: Reemplaza coma por punto por si acaso quedó en el Excel original (ej: 3,5)
+                price: parseFloat(String(p.precio).replace(',', '.')) || 0,
+                stock: parseInt(p.stock) || 0,
                 description: p.descripcion,
                 icon: p.icono,
                 imagen: p.imagen || ''
@@ -58,14 +60,18 @@ class DataLoader {
             if (!resConf.ok) throw new Error('No se encontró configuracion.csv');
             const confData = this.parseCSV(await resConf.text());
             
-                       confData.forEach(item => {
-                let key = item.tipo + 's';
+            // FIX: Lógica corregida sin errores de sintaxis
+            confData.forEach(item => {
+                let key = item.tipo + 's'; // Ej: 'tela' -> 'telas'
+                
+                // Excepciones para plurales irregulares o nombres compuestos
                 if (item.tipo === 'metodo_pago') key = 'metodosPago';
-                if (item.tipo === 'color') key = 'colores'; // <-- ESTA LÍNEA ARREGLA EL BUG
-                if (this.config[key]) this.config[key].push(item.valor);
-            });
+                if (item.tipo === 'color') key = 'colores';
+                
+                if (this.config[key]) {
+                    this.config[key].push(item.valor);
                 } else {
-                    console.warn('⚠️ Tipo no reconocido:', item.tipo);
+                    console.warn('⚠️ Tipo no reconocido en CSV:', item.tipo, '| Valor:', item.valor);
                 }
             });
 
