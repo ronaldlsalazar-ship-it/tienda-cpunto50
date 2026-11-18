@@ -12,7 +12,6 @@
     <header class="header">
         <div class="container header-content">
             <div class="logo">
-                <!-- Reemplaza src con tu logo real -->
                 <img src="assets/logo.png" alt="Logo" onerror="this.style.display='none'">
                 <div>
                     <h1>CREACIONES PUNTO 50</h1>
@@ -22,6 +21,7 @@
             <nav class="nav">
                 <ul>
                     <li><a href="#productos">Productos</a></li>
+                    <li><a href="#cotizador">Cotizador</a></li>
                     <li><a href="#servicios">Servicios</a></li>
                     <li><a href="#contacto">Contacto</a></li>
                 </ul>
@@ -41,6 +41,7 @@
         </div>
     </section>
 
+    <!-- PRODUCTOS -->
     <section id="productos">
         <div class="container">
             <h2 class="section-title">Nuestros Productos</h2>
@@ -57,11 +58,86 @@
                 </select>
             </div>
             <div class="products-grid" id="productsGrid">
-                <p style="text-align:center; grid-column: 1/-1;">Cargando productos...</p>
+                <p style="text-align:center; grid-column:1/-1;">Cargando productos...</p>
             </div>
         </div>
     </section>
 
+    <!-- COTIZADOR -->
+    <section id="cotizador" class="cotizador-section">
+        <div class="container">
+            <h2 class="section-title">Cotizador de Uniformes</h2>
+            <p class="cotizador-intro">Arma tu pedido con las especificaciones exactas y recibe una cotización al instante o envíala por WhatsApp.</p>
+            <div class="cotizador-grid">
+                <div class="cot-form">
+                    <div class="form-group">
+                        <label for="cotProducto">Producto base *</label>
+                        <select id="cotProducto"></select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cotCantidad">Cantidad *</label>
+                            <input type="number" id="cotCantidad" min="1" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="cotServicio">Servicio</label>
+                            <select id="cotServicio"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cotTela">Tela</label>
+                            <select id="cotTela"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cotColor">Color</label>
+                            <select id="cotColor"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cotTalla">Talla</label>
+                            <select id="cotTalla"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cotSexo">Sexo</label>
+                            <select id="cotSexo"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cotModelo">Modelo</label>
+                            <select id="cotModelo"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cotManga">Manga</label>
+                            <select id="cotManga"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cotNota">Detalle / Logo / Instrucción</label>
+                        <textarea id="cotNota" rows="2" placeholder="Ej: bordar logo en pecho izquierdo"></textarea>
+                    </div>
+                </div>
+
+                <div class="cot-resumen">
+                    <h3>Resumen de cotización</h3>
+                    <div id="cotSpecs" class="cot-specs"></div>
+                    <div class="cot-total-row">
+                        <span>Total estimado</span>
+                        <span id="cotTotal">$0.00</span>
+                    </div>
+                    <small class="cot-note">* Precio estimado. El costo final se confirma según tela, cantidad y complejidad del trabajo.</small>
+                    <div class="cot-actions">
+                        <button class="btn btn-primary" id="cotAddCart"><i class="fas fa-cart-plus"></i> Agregar al carrito</button>
+                        <button class="btn btn-wa" id="cotSendWa"><i class="fab fa-whatsapp"></i> Enviar por WhatsApp</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICIOS -->
     <section id="servicios" style="background: var(--white);">
         <div class="container">
             <h2 class="section-title">Nuestros Servicios</h2>
@@ -69,23 +145,22 @@
         </div>
     </section>
 
+    <!-- CONTACTO -->
     <section id="contacto">
         <div class="container">
             <h2 class="section-title">Métodos de Pago</h2>
-            <div style="text-align: center; color: var(--gray);">
-                <p>Aceptamos: Efectivo ($/Bs), Pago Móvil, Transferencia, Zelle, Binance, PayPal y Punto de Venta.</p>
-                <p style="margin-top: 1rem;"><strong>Bancos aliados:</strong> Banesco, Mercantil, Provincial, BDV, Bancamiga, entre otros.</p>
-            </div>
+            <div class="payment-grid" id="paymentGrid"></div>
+            <p style="text-align:center; margin-top:1.5rem; color:var(--gray);"><strong>Bancos aliados:</strong> Banesco, Mercantil, Provincial, BDV, Bancamiga, entre otros.</p>
         </div>
     </section>
 
-    <footer style="background: var(--dark); color: white; text-align: center; padding: 2rem 0;">
+    <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Creaciones Punto 50. Todos los derechos reservados.</p>
-        </div
+            <p>&copy; 2026 Creaciones Punto 50. Todos los derechos reservados.</p>
+        </div>
     </footer>
 
-    <!-- Cart Modal -->
+    <!-- CARRITO -->
     <div class="cart-modal" id="cartModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -94,16 +169,13 @@
             </div>
             <div id="cartItems"></div>
             <div class="cart-footer">
-                <div class="cart-total">
-                    <span>Total:</span>
-                    <span id="totalAmount">$0.00</span>
-                </div>
-                <button class="btn btn-primary" style="width: 100%;" id="checkoutBtn">Proceder al Pago</button>
+                <div class="cart-total"><span>Total:</span><span id="totalAmount">$0.00</span></div>
+                <button class="btn btn-primary" style="width:100%;" id="checkoutBtn">Proceder al Pago</button>
             </div>
         </div>
     </div>
 
-    <!-- Checkout Modal -->
+    <!-- CHECKOUT -->
     <div class="checkout-modal" id="checkoutModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -112,31 +184,44 @@
             </div>
             <form id="checkoutForm">
                 <div class="form-group">
-                    <label>Nombre Completo *</label>
+                    <label for="customerName">Nombre Completo *</label>
                     <input type="text" id="customerName" required>
                 </div>
                 <div class="form-group">
-                    <label>Teléfono (WhatsApp) *</label>
+                    <label for="customerPhone">Teléfono (WhatsApp) *</label>
                     <input type="tel" id="customerPhone" required>
                 </div>
                 <div class="form-group">
-                    <label>Dirección de Entrega *</label>
+                    <label for="customerAddress">Dirección de Entrega *</label>
                     <textarea id="customerAddress" rows="2" required></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Banco para Transferencia/Pago Móvil</label>
+                    <label for="bankSelect">Banco para Pago Móvil / Transferencia</label>
                     <select id="bankSelect"></select>
                 </div>
                 <div class="form-group">
-                    <label>Resumen del Pedido</label>
-                    <div id="orderSummary" style="background: var(--light); padding: 1rem; border-radius: 0.5rem;"></div>
+                    <label for="paymentMethod">Método de Pago *</label>
+                    <select id="paymentMethod" required></select>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Pedido</button>
+                <div class="form-group">
+                    <label>Resumen del Pedido</label>
+                    <div id="orderSummary" class="order-summary"></div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Confirmar Pedido</button>
             </form>
+            <!-- Pantalla de éxito (reemplaza al alert) -->
+            <div id="orderSuccess" class="order-success" style="display:none;">
+                <i class="fas fa-check-circle"></i>
+                <h3>¡Pedido confirmado!</h3>
+                <p>Tu pedido <strong id="successOrderId"></strong> fue registrado.</p>
+                <div id="successDetails" class="summary-box"></div>
+                <p class="success-wa">Te contactaremos por WhatsApp para coordinar el pago y la entrega.</p>
+                <button class="btn btn-primary" id="successClose" style="width:100%; margin-top:1rem;">Volver a la tienda</button>
+            </div>
         </div>
     </div>
 
-    <!-- Notification -->
+    <!-- NOTIFICACIÓN -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationText"></span>
@@ -147,4 +232,4 @@
     <script src="js/app.js"></script>
     <script src="js/checkout.js"></script>
 </body>
-</html>
+</html>         
