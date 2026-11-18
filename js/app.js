@@ -44,12 +44,6 @@ function renderProducts(list) {
         </div>`;
     }).join('');
 }
-function renderServices() {
-    const grid = document.getElementById('servicesGrid');
-    if (!grid) return;
-    grid.innerHTML = services.map(s => `
-        <div class="service-card"><i class="fas ${s.icon}"></i><h3>${s.name}</h3><p>${s.description}</p></div>`).join('');
-}
 
 function renderPayments() {
     const grid = document.getElementById('paymentGrid');
