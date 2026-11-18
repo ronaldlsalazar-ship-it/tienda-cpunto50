@@ -25,37 +25,38 @@ class DataLoader {
 
     async loadAll() {
         try {
-            // 1. Cargar Productos
+            // 1. Cargar Productos (AHORA CON LA COLUMNA imagen)
             const resProd = await fetch('data/productos.csv');
             const prodData = this.parseCSV(await resProd.text());
             this.products = prodData.map(p => ({
-                id: parseInt(p.id), name: p.nombre, category: p.categoria,
-                price: parseFloat(p.precio), stock: parseInt(p.stock),
-                description: p.descripcion, icon: p.icono
+                id: parseInt(p.id),
+                name: p.nombre,
+                category: p.categoria,
+                price: parseFloat(p.precio),
+                stock: parseInt(p.stock),
+                description: p.descripcion,
+                icon: p.icono,
+                imagen: p.imagen || ''          // <--- ESTA LÍNEA FALTABA
             }));
 
             // 2. Cargar Servicios
             const resServ = await fetch('data/servicios.csv');
             const servData = this.parseCSV(await resServ.text());
-            this.services = servData.map(s => ({ id: parseInt(s.id), name: s.nombre, description: s.descripcion, icon: s.icono }));
+            this.services = servData.map(s => ({ 
+                id: parseInt(s.id), name: s.nombre, description: s.descripcion, icon: s.icono 
+            }));
 
             // 3. Cargar Configuración
             const resConf = await fetch('data/configuracion.csv');
             const confData = this.parseCSV(await resConf.text());
-            
             confData.forEach(item => {
-                // Mapeo correcto de nombres del CSV a las claves del objeto config
                 let key = item.tipo + 's';
-                if (item.tipo === 'metodo_pago') key = 'metodosPago'; // <-- AQUÍ ESTABA EL FIX
-                
-                if (this.config[key]) {
-                    this.config[key].push(item.valor);
-                }
+                if (item.tipo === 'metodo_pago') key = 'metodosPago';
+                if (this.config[key]) this.config[key].push(item.valor);
             });
 
-            console.log('✅ Datos cargados:', this.products.length, 'productos,', this.services.length, 'servicios');
-            console.log('✅ Configuración:', this.config.metodosPago.length, 'métodos de pago,', this.config.bancos.length, 'bancos');
-            
+            console.log('✅ Datos cargados:', this.products.length, 'productos');
+            console.log('📸 Con imagen:', this.products.filter(p => p.imagen).length);
             return { products: this.products, services: this.services, config: this.config };
         } catch (error) {
             console.error('❌ Error cargando datos CSV:', error);
