@@ -151,13 +151,17 @@ section { padding:4rem 0; }
     color: #d1d5db;
 }
 
-/* La imagen real dentro del contenedor */
 .product-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;          /* recorta para llenar sin deformar */
-    object-position: center;    /* centra el recorte */
+    object-fit: contain;          /* ← CAMBIO CLAVE: muestra TODO sin recortar */
+    object-position: center;
     display: block;
+    padding: 10px;                /* pequeño margen para que no toque los bordes */
+}
+
+.product-image {
+    background: #ffffff !important;  /* fondo blanco limpio (antes era gris) */
 }
 
 /* Ícono de respaldo (cuando no hay imagen) */
