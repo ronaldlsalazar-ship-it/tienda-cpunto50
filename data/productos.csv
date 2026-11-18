@@ -13,7 +13,7 @@ id,nombre,categoria,precio,stock,descripcion,icono
 12,BRAGAS INDUSTRIAL 70%-30%,bomberil,45.00,20,Bragas mezcla 70/30 industrial,fa-fire-extinguisher
 13,BRAGAS INDUSTRIAL IGNIFUGA,bomberil,100.00,10,Bragas ignífuga certificada,fa-fire
 14,BUZO,eventos,13.00,40,Buzo deportivo personalizado,fa-shirt
-15,CAMISA CLASICA,empresarial,16.00,50,Camisa clásica corporativa,fa-shirt,camisaclasicaCab.jpg
+15,CAMISA CLASICA,empresarial,16.00,50,Camisa clásica corporativa,camisaclasicaCab.jpg
 16,CAMISA COLUMBIA,empresarial,16.00,50,Camisa modelo Columbia,fa-shirt
 17,CAPONAS (PAR),accesorios,9.00,40,Par de caponas reforzadas,fa-shirt
 18,CHAQUETA ESCOLAR,eventos,16.00,50,Chaqueta para uniforme escolar,fa-graduation-cap
