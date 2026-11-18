@@ -2,7 +2,10 @@ class DataLoader {
     constructor() {
         this.products = [];
         this.services = [];
-        this.config = { telas: [], colores: [], tallas: [], sexos: [], metodosPago: [], bancos: [], modelos: [], mangas: [], servicios: [] };
+        this.config = { 
+            telas: [], colores: [], tallas: [], sexos: [], 
+            metodosPago: [], bancos: [], modelos: [], mangas: [], servicios: [] 
+        };
     }
 
     parseCSV(text) {
@@ -12,7 +15,6 @@ class DataLoader {
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
-            // Manejo básico de comas dentro de comillas si las hubiera, pero nuestros datos son limpios
             const values = line.split(',').map(v => v.trim());
             const obj = {};
             headers.forEach((header, index) => { obj[header] = values[index] || ''; });
@@ -23,7 +25,7 @@ class DataLoader {
 
     async loadAll() {
         try {
-            // Cargar Productos
+            // 1. Cargar Productos
             const resProd = await fetch('data/productos.csv');
             const prodData = this.parseCSV(await resProd.text());
             this.products = prodData.map(p => ({
@@ -32,19 +34,28 @@ class DataLoader {
                 description: p.descripcion, icon: p.icono
             }));
 
-            // Cargar Servicios
+            // 2. Cargar Servicios
             const resServ = await fetch('data/servicios.csv');
             const servData = this.parseCSV(await resServ.text());
             this.services = servData.map(s => ({ id: parseInt(s.id), name: s.nombre, description: s.descripcion, icon: s.icono }));
 
-            // Cargar Configuración
+            // 3. Cargar Configuración
             const resConf = await fetch('data/configuracion.csv');
             const confData = this.parseCSV(await resConf.text());
+            
             confData.forEach(item => {
-                if (this.config[item.tipo + 's']) this.config[item.tipo + 's'].push(item.valor);
+                // Mapeo correcto de nombres del CSV a las claves del objeto config
+                let key = item.tipo + 's';
+                if (item.tipo === 'metodo_pago') key = 'metodosPago'; // <-- AQUÍ ESTABA EL FIX
+                
+                if (this.config[key]) {
+                    this.config[key].push(item.valor);
+                }
             });
 
             console.log('✅ Datos cargados:', this.products.length, 'productos,', this.services.length, 'servicios');
+            console.log('✅ Configuración:', this.config.metodosPago.length, 'métodos de pago,', this.config.bancos.length, 'bancos');
+            
             return { products: this.products, services: this.services, config: this.config };
         } catch (error) {
             console.error('❌ Error cargando datos CSV:', error);
