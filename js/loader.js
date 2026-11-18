@@ -25,8 +25,10 @@ class DataLoader {
 
     async loadAll() {
         try {
-            // 1. Cargar Productos (AHORA CON LA COLUMNA imagen)
+            // 1. Cargar Productos
+            console.log('📦 Cargando productos.csv...');
             const resProd = await fetch('data/productos.csv');
+            if (!resProd.ok) throw new Error('No se encontró productos.csv (HTTP ' + resProd.status + ')');
             const prodData = this.parseCSV(await resProd.text());
             this.products = prodData.map(p => ({
                 id: parseInt(p.id),
@@ -36,30 +38,50 @@ class DataLoader {
                 stock: parseInt(p.stock),
                 description: p.descripcion,
                 icon: p.icono,
-                imagen: p.imagen || ''          // <--- ESTA LÍNEA FALTABA
+                imagen: p.imagen || ''
             }));
+            console.log('✅ Productos cargados:', this.products.length);
 
             // 2. Cargar Servicios
+            console.log('🛠️ Cargando servicios.csv...');
             const resServ = await fetch('data/servicios.csv');
+            if (!resServ.ok) throw new Error('No se encontró servicios.csv');
             const servData = this.parseCSV(await resServ.text());
             this.services = servData.map(s => ({ 
                 id: parseInt(s.id), name: s.nombre, description: s.descripcion, icon: s.icono 
             }));
+            console.log('✅ Servicios cargados:', this.services.length);
 
             // 3. Cargar Configuración
+            console.log('⚙️ Cargando configuracion.csv...');
             const resConf = await fetch('data/configuracion.csv');
+            if (!resConf.ok) throw new Error('No se encontró configuracion.csv');
             const confData = this.parseCSV(await resConf.text());
+            
             confData.forEach(item => {
                 let key = item.tipo + 's';
                 if (item.tipo === 'metodo_pago') key = 'metodosPago';
-                if (this.config[key]) this.config[key].push(item.valor);
+                if (this.config[key]) {
+                    this.config[key].push(item.valor);
+                } else {
+                    console.warn('⚠️ Tipo no reconocido:', item.tipo);
+                }
             });
 
-            console.log('✅ Datos cargados:', this.products.length, 'productos');
-            console.log('📸 Con imagen:', this.products.filter(p => p.imagen).length);
+            console.log('✅ Configuración cargada:');
+            console.log('   - Telas:', this.config.telas.length);
+            console.log('   - Colores:', this.config.colores.length);
+            console.log('   - Tallas:', this.config.tallas.length);
+            console.log('   - Sexos:', this.config.sexos.length);
+            console.log('   - Modelos:', this.config.modelos.length);
+            console.log('   - Mangas:', this.config.mangas.length);
+            console.log('   - Servicios:', this.config.servicios.length);
+            console.log('   - Métodos de pago:', this.config.metodosPago.length);
+            console.log('   - Bancos:', this.config.bancos.length);
+            
             return { products: this.products, services: this.services, config: this.config };
         } catch (error) {
-            console.error('❌ Error cargando datos CSV:', error);
+            console.error('❌ ERROR CRÍTICO cargando datos:', error);
             return { products: [], services: [], config: {} };
         }
     }
