@@ -1,4 +1,4 @@
-id,nombre,categoria,precio,stock,descripcion,icono
+id,nombre,categoria,precio,stock,descripcion,icono,imagen
 1,ALMILLA,accesorios,7.00,50,Almilla interior de alta calidad,fa-shirt
 2,BALACLAVA,accesorios,6.00,50,Balaclava táctica multifuncional,fa-mask
 3,BANDERA,accesorios,25.00,20,Bandera estándar institucional,fa-flag
