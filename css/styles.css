@@ -173,9 +173,9 @@ section { padding:4rem 0; }
 
 .product-image {
     width: 100% !important;
-    height: 220px !important;       /* Altura fija del "marco" */
-    max-height: 220px !important;
-    overflow: hidden !important;    /* Corta lo que sobra */
+    height: 320px !important;     /* ← antes era 220px, ahora más alto */
+    max-height: 320px !important;
+    overflow: hidden !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -183,11 +183,11 @@ section { padding:4rem 0; }
 }
 
 .product-image img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;   /* La clave: llena el marco sin estirar/deformar */
-    object-position: center top !important; /* Muestra la parte de arriba (ej: cuello de la camisa) */
-    display: block !important;
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: center top !important;  /* muestra el cuello, no la panza */
+    display: block;
 }
 
 /* Ícono de respaldo si la imagen falla */
