@@ -1,3 +1,4 @@
+// ⚠️ CAMBIA ESTE NÚMERO por el WhatsApp real de tu negocio (código país + número, sin + ni espacios)
 const NUMERO_WA = '584148565666';
 
 let products = [], services = [], config = {};
@@ -64,6 +65,7 @@ function renderProducts(list) {
         </div>`;
     }).join('');
 }
+
 function renderServices() {
     const grid = document.getElementById('servicesGrid');
     if (!grid) return;
