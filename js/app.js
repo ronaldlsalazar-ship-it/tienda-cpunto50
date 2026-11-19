@@ -34,16 +34,21 @@ function renderProducts(list) {
     if (!list.length) { grid.innerHTML = '<p style="text-align:center;grid-column:1/-1;">No se encontraron productos.</p>'; return; }
     
     grid.innerHTML = list.map(p => {
-        const imagenHTML = p.imagen 
-            ? `<div class="product-image">
-                 <img src="assets/images/${p.imagen}" alt="${p.name}" loading="lazy"
-                      onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\\'fas ${p.icon}\\'></i>';">
-               </div>`
-            : `<div class="product-image"><i class="fas ${p.icon}"></i></div>`;
+        let imagenesHTML = '';
+        
+        // Si tiene imágenes, crea una galería
+        if (p.imagenes && p.imagenes.length > 0) {
+            imagenesHTML = `<div class="product-gallery">` + 
+                p.imagenes.map(img => `<img src="assets/images/${img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">`).join('') + 
+                `</div>`;
+        } else {
+            // Si no tiene imágenes, muestra el ícono
+            imagenesHTML = `<div class="product-image"><i class="fas ${p.icon}"></i></div>`;
+        }
         
         return `
         <div class="product-card">
-            ${imagenHTML}
+            ${imagenesHTML}
             <div class="product-info">
                 <span class="product-category">${p.category.toUpperCase()}</span>
                 <h3 class="product-name">${p.name}</h3>
@@ -55,7 +60,6 @@ function renderProducts(list) {
         </div>`;
     }).join('');
 }
-
 function renderServices() {
     const grid = document.getElementById('servicesGrid');
     if (!grid) return;
