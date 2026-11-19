@@ -1,5 +1,5 @@
 // ⚠️ CAMBIA ESTE NÚMERO por el WhatsApp real de tu negocio (código país + número, sin + ni espacios)
-const NUMERO_WA = '584148565666';
+const NUMERO_WA = '5841266550353';
 
 let products = [], services = [], config = {};
 
