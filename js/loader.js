@@ -40,7 +40,7 @@ class DataLoader {
                 stock: parseInt(p.stock) || 0,
                 description: p.descripcion,
                 icon: p.icono,
-                imagen: p.imagen || ''
+                imagenes: p.imagen ? p.imagen.split('|').map(img => img.trim()).filter(img => img !== '') : []
             }));
             console.log('✅ Productos cargados:', this.products.length);
 
