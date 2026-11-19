@@ -35,11 +35,12 @@ class DataLoader {
                 id: parseInt(p.id),
                 name: p.nombre,
                 category: p.categoria,
-                // FIX: Reemplaza coma por punto por si acaso quedó en el Excel original (ej: 3,5)
+                // FIX: Reemplaza coma por punto por si quedó en el Excel original (ej: 3,5)
                 price: parseFloat(String(p.precio).replace(',', '.')) || 0,
                 stock: parseInt(p.stock) || 0,
                 description: p.descripcion,
                 icon: p.icono,
+                // Soporte para múltiples imágenes separadas por |
                 imagenes: p.imagen ? p.imagen.split('|').map(img => img.trim()).filter(img => img !== '') : []
             }));
             console.log('✅ Productos cargados:', this.products.length);
@@ -60,7 +61,7 @@ class DataLoader {
             if (!resConf.ok) throw new Error('No se encontró configuracion.csv');
             const confData = this.parseCSV(await resConf.text());
             
-            // FIX: Lógica corregida sin errores de sintaxis
+            // FIX: Lógica corregida para plurales irregulares
             confData.forEach(item => {
                 let key = item.tipo + 's'; // Ej: 'tela' -> 'telas'
                 
