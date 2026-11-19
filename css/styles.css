@@ -41,9 +41,9 @@ section { padding:4rem 0; }
 /* PRODUCTOS */
 .filters { display:flex; justify-content:center; margin-bottom:2rem; }
 .filters select { padding:.5rem 1rem; border:1px solid #d1d5db; border-radius:.5rem; font-size:1rem; color:var(--dark); background:#fff; }
-.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:2rem; }
+.products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:2rem; }
 
-/* === MARCO DE IMAGEN (UNA SOLA VEZ, BIEN DEFINIDO) === */
+/* === TARJETA DE PRODUCTO === */
 .product-card {
     background:var(--white);
     border-radius:1rem;
@@ -53,13 +53,13 @@ section { padding:4rem 0; }
 }
 .product-card:hover { transform:translateY(-5px); }
 
-/* === GALERÍA DE IMÁGENES DEL PRODUCTO === */
+/* === GALERÍA DE IMÁGENES (1 o más fotos) === */
 .product-gallery {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 columnas para 2 imágenes */
-    gap: 4px; /* Pequeño espacio entre imágenes */
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
     width: 100%;
-    height: 240px; /* Misma altura que teníamos antes */
+    height: 300px;
     background: #ffffff;
     overflow: hidden;
 }
@@ -67,32 +67,33 @@ section { padding:4rem 0; }
 .product-gallery img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Muestra la imagen completa sin recortar */
-    object-position: center;
+    object-fit: cover;
+    object-position: center top;
     display: block;
-    padding: 10px;
     background: #ffffff;
 }
 
-/* Si el producto solo tiene 1 imagen, que ocupe todo el ancho */
+/* Si hay SOLO 1 imagen, que ocupe TODO el espacio sin padding */
 .product-gallery img:only-child {
     grid-column: 1 / -1;
-    padding: 15px; /* Un poco más de espacio si es la única */
+    object-fit: cover;
+    object-position: center top;
 }
 
-/* Mantener el respaldo del ícono */
+/* Respaldo: ícono si no hay imagen */
 .product-image {
     width: 100%;
-    height: 240px;
+    height: 300px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: #ffffff;
 }
 .product-image i {
-    font-size: 4rem;
+    font-size: 5rem;
     color: #d1d5db;
 }
+
 /* INFO DEL PRODUCTO */
 .product-info { padding:1.5rem; color:var(--dark); }
 .product-category { font-size:.7rem; color:var(--primary); font-weight:700; text-transform:uppercase; }
