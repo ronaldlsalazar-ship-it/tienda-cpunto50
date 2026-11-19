@@ -119,6 +119,7 @@ section { padding:4rem 0; }
     font-size: 5rem;
     color: #d1d5db;
 }
+
 /* INFO DEL PRODUCTO */
 .product-info { padding:1.5rem; color:var(--dark); }
 .product-category { font-size:.7rem; color:var(--primary); font-weight:700; text-transform:uppercase; }
