@@ -36,13 +36,17 @@ function renderProducts(list) {
     grid.innerHTML = list.map(p => {
         let imagenesHTML = '';
         
-        // Si tiene imágenes, crea una galería
         if (p.imagenes && p.imagenes.length > 0) {
-            imagenesHTML = `<div class="product-gallery">` + 
-                p.imagenes.map(img => `<img src="assets/images/${img}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">`).join('') + 
-                `</div>`;
+            // Tomar solo las primeras 2 imágenes (frente y reverso)
+            const img1 = p.imagenes[0];
+            const img2 = p.imagenes[1] || p.imagenes[0]; // Si solo hay 1, usar la misma
+            
+            imagenesHTML = `
+            <div class="product-gallery">
+                <img src="assets/images/${img1}" alt="${p.name} - frente" loading="lazy" onerror="this.parentElement.innerHTML='<i class=\\'fas ${p.icon}\\'></i>'">
+                <img src="assets/images/${img2}" alt="${p.name} - detalle" loading="lazy" onerror="this.style.display='none'">
+            </div>`;
         } else {
-            // Si no tiene imágenes, muestra el ícono
             imagenesHTML = `<div class="product-image"><i class="fas ${p.icon}"></i></div>`;
         }
         
