@@ -53,11 +53,11 @@ section { padding:4rem 0; }
 }
 .product-card:hover { transform:translateY(-5px); }
 
-/* === GALERÍA CON EFECTO HOVER (CAMBIO DE IMAGEN AL PASAR EL MOUSE) === */
+/* === GALERÍA CON EFECTO HOVER SWAP (TAMAÑO AJUSTADO) === */
 .product-gallery {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 220px;
     background: #ffffff;
     overflow: hidden;
     cursor: pointer;
@@ -69,35 +69,50 @@ section { padding:4rem 0; }
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: center top;
+    object-fit: contain;
+    object-position: center;
     display: block;
     transition: opacity 0.4s ease-in-out;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
-/* Primera imagen: siempre visible */
+/* Imagen 1: visible por defecto */
 .product-gallery img:first-child {
     opacity: 1;
     z-index: 1;
 }
 
-/* Segunda imagen: oculta por defecto, visible al hacer hover */
+/* Imagen 2: oculta, aparece al hacer hover */
 .product-gallery img:nth-child(2) {
     opacity: 0;
     z-index: 2;
 }
 
-.product-gallery:hover img:first-child {
-    opacity: 0;
+.product-gallery:hover img:first-child { opacity: 0; }
+.product-gallery:hover img:nth-child(2) { opacity: 1; }
+
+/* Si hay más de 2 imágenes, las demás se ignoran */
+.product-gallery img:nth-child(n+3) { display: none; }
+
+/* Si SOLO hay 1 imagen, no aplica hover */
+.product-gallery img:only-child {
+    position: relative;
+    opacity: 1 !important;
 }
 
-.product-gallery:hover img:nth-child(2) {
-    opacity: 1;
+/* Respaldo: ícono si no hay imagen */
+.product-image {
+    width: 100%;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
 }
-
-/* Si hay más de 2 imágenes, las demás permanecen ocultas */
-.product-gallery img:nth-child(n+3) {
-    display: none;
+.product-image i {
+    font-size: 4rem;
+    color: #d1d5db;
 }
 
 /* Si SOLO hay 1 imagen, que ocupe todo sin efecto hover */
